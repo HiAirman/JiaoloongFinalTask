@@ -7,9 +7,15 @@
 #include "cmsis_os2.h"
 
 //Message Queues
-osMessageQueueId_t test_queue_handle;
-osMessageQueueAttr_t test_queue_attribute{
-    .name = "test_queue",
+// osMessageQueueId_t test_queue_handle;
+// osMessageQueueAttr_t test_queue_attribute{
+//     .name = "test_queue",
+// };
+
+//Semaphore
+osSemaphoreId_t test_semaphore_handle;
+osSemaphoreAttr_t test_semaphore_attribute{
+    .name = "test_semaphore",
 };
 
 //tasks
@@ -26,8 +32,12 @@ uint32_t send = 0;
     while (true) {
         //发送
         auto ticks = osKernelGetTickCount();
-        send++;
-        osMessageQueuePut(test_queue_handle, &send, osPriorityNormal, 0);
+        //    send++;
+        //    osMessageQueuePut(test_queue_handle, &send, osPriorityNormal, 0);
+        if (send++ % 5 == 0) {
+            //预期：send增加5，receive增加1
+            osSemaphoreRelease(test_semaphore_handle);
+        }
         osDelayUntil(ticks + 1);
     }
 }
@@ -44,13 +54,17 @@ uint32_t receive = 0;
 [[noreturn]] void test2_task(void*) {
     while (true) {
         //接收
-        osMessageQueueGet(test_queue_handle, &receive, nullptr, osWaitForever);
+        //    osMessageQueueGet(test_queue_handle, &receive, nullptr, osWaitForever);
+        osSemaphoreAcquire(test_semaphore_handle, osWaitForever);
+        receive++;
     }
 }
 
 
 void user_task_init() {
-    test_queue_handle = osMessageQueueNew(10, sizeof(uint32_t), &test_queue_attribute);
+    // test_queue_handle = osMessageQueueNew(10, sizeof(uint32_t), &test_queue_attribute);
+
+    test_semaphore_handle = osSemaphoreNew(1, 0, &test_semaphore_attribute);
 
     test_task_handle = osThreadNew(test_task, nullptr, &test_task_attribute);
 
