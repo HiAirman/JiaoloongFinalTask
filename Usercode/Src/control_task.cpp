@@ -8,6 +8,12 @@
 
 #include "gimbal_settings.h"
 
+osThreadId_t control_task_handle;
+osThreadAttr_t control_task_attribute{
+    .name = "control_task",
+    .stack_size = TASK_STACK_SIZE_DEFAULT,
+    .priority = TASK_PRIORITY_CONTROL_TASK,
+};
 
 [[noreturn]] void control_task(void*) {
     while (true) {

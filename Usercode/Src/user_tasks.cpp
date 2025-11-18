@@ -60,7 +60,6 @@ osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
 //tasks are moved into their files
 
 void user_task_init() {
-
     //Initialization初始化各组件
     //MassageQueues & Semaphores & Eventflags开启各线程间通信
     dbus_to_control_queue_handle = osMessageQueueNew(1, 10, &dbus_to_control_queue_attribute);

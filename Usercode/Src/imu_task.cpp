@@ -8,6 +8,13 @@
 
 #include "gimbal_settings.h"
 
+osThreadId_t imu_task_handle;
+osThreadAttr_t imu_task_attribute{
+    .name = "imu_task",
+    .stack_size = TASK_STACK_SIZE_DEFAULT,
+    .priority = TASK_PRIORITY_IMU_TASK,
+};
+
 [[noreturn]] void imu_task(void*) {
     while (true) {
         auto ticks = osKernelGetTickCount();

@@ -7,14 +7,8 @@
 
 #include "cmsis_os2.h"
 
-#include "gimbal_settings.h"
-
-osThreadId_t control_task_handle;
-osThreadAttr_t control_task_attribute{
-    .name = "control_task",
-    .stack_size = TASK_STACK_SIZE_DEFAULT,
-    .priority = TASK_PRIORITY_CONTROL_TASK,
-};
+extern osThreadId_t control_task_handle;
+extern osThreadAttr_t control_task_attribute;
 
 //主控制循环
 [[noreturn]] void control_task(void*);
