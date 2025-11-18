@@ -6,11 +6,12 @@
 
 #include "cmsis_os2.h"
 
+#include "control_task.h"
+#include "can_tx_task.h"
+#include "imu_task.h"
+#include "motor_task.h"
+
 //Message Queues
-// osMessageQueueId_t test_queue_handle;
-// osMessageQueueAttr_t test_queue_attribute{
-//     .name = "test_queue",
-// };
 //覆盖式队列：
 //传输遥控器数据
 osMessageQueueId_t dbus_to_control_queue_handle;
@@ -56,75 +57,9 @@ osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
 //    .name = "test_event_flag"
 //};
 
-//tasks
-osThreadId_t control_task_handle;
-osThreadAttr_t control_task_attribute{
-    .name = "control_task",
-    .stack_size = 128 * 4,
-    .priority = osPriorityNormal,
-};
-
-[[noreturn]] void control_task(void*) {
-    while (true) {
-        //发送
-        auto ticks = osKernelGetTickCount();
-
-        osDelayUntil(ticks + 14);
-    }
-}
-
-osThreadId_t can_tx_task_handle;
-osThreadAttr_t can_tx_task_attribute{
-    .name = "can_tx_task",
-    .stack_size = 128 * 4,
-    .priority = osPriorityNormal,
-};
-
-[[noreturn]] void can_tx_task(void*) {
-    while (true) {
-        auto ticks = osKernelGetTickCount();
-
-        osDelayUntil(ticks + 1);
-    }
-}
-
-osThreadId_t imu_task_handle;
-osThreadAttr_t imu_task_attribute{
-    .name = "imu_task",
-    .stack_size = 128 * 4,
-    .priority = osPriorityNormal,
-};
-
-[[noreturn]] void imu_task(void*) {
-    while (true) {
-        auto ticks = osKernelGetTickCount();
-
-        osDelayUntil(ticks + 14);
-    }
-}
-
-osThreadId_t motor_task_handle;
-osThreadAttr_t motor_task_attribute{
-    .name = "motor_task",
-    .stack_size = 128 * 4,
-    .priority = osPriorityNormal,
-};
-
-[[noreturn]] void motor_task(void*) {
-    while (true) {
-        auto ticks = osKernelGetTickCount();
-
-        osDelayUntil(ticks + 1);
-    }
-}
+//tasks are moved into their files
 
 void user_task_init() {
-    // test_queue_handle = osMessageQueueNew(10, sizeof(uint32_t), &test_queue_attribute);
-    // test_semaphore_handle = osSemaphoreNew(1, 0, &test_semaphore_attribute);
-    //test_event_flag_handle = osEventFlagsNew(&test_event_flag_attribute);
-    //test_task_handle = osThreadNew(test_task, nullptr, &test_task_attribute);
-    //test2_task_handle = osThreadNew(test2_task, nullptr, &test2_task_attribute);
-    //test3_task_handle = osThreadNew(test3_task, nullptr, &test3_task_attribute);
 
     //Initialization初始化各组件
     //MassageQueues & Semaphores & Eventflags开启各线程间通信
