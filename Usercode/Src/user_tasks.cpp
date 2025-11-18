@@ -6,6 +6,8 @@
 
 #include "cmsis_os2.h"
 
+#include "gimbal_settings.h"
+#include "data_types.h"
 #include "control_task.h"
 #include "can_tx_task.h"
 #include "imu_task.h"
@@ -62,8 +64,8 @@ osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
 void user_task_init() {
     //Initialization初始化各组件
     //MassageQueues & Semaphores & Eventflags开启各线程间通信
-    dbus_to_control_queue_handle = osMessageQueueNew(1, 10, &dbus_to_control_queue_attribute);
-    imu_to_control_queue_handle = osMessageQueueNew(1, 10, &imu_to_control_queue_attribute);
+    dbus_to_control_queue_handle = osMessageQueueNew(1, sizeof(controller_data_t), &dbus_to_control_queue_attribute);
+    imu_to_control_queue_handle = osMessageQueueNew(1, sizeof(imu_data_t), &imu_to_control_queue_attribute);
     control_to_motor_queue_handle = osMessageQueueNew(1, 10, &control_to_motor_queue_attribute);
     can_rx_to_motor_queue_handle = osMessageQueueNew(1, 10, &can_rx_to_motor_queue_attribute);
     dbus_to_motor_queue_handle = osMessageQueueNew(1, 10, &dbus_to_motor_queue_attribute);
