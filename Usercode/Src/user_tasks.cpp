@@ -120,15 +120,10 @@ osThreadAttr_t motor_task_attribute{
 
 void user_task_init() {
     // test_queue_handle = osMessageQueueNew(10, sizeof(uint32_t), &test_queue_attribute);
-
     // test_semaphore_handle = osSemaphoreNew(1, 0, &test_semaphore_attribute);
-
     //test_event_flag_handle = osEventFlagsNew(&test_event_flag_attribute);
-
     //test_task_handle = osThreadNew(test_task, nullptr, &test_task_attribute);
-
     //test2_task_handle = osThreadNew(test2_task, nullptr, &test2_task_attribute);
-
     //test3_task_handle = osThreadNew(test3_task, nullptr, &test3_task_attribute);
 
     //Initialization初始化各组件

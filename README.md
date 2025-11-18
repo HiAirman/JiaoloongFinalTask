@@ -1,5 +1,10 @@
 ## Jiaolong Small Gimbal Project Repository
 
+# Project Name
+
+🌐 **Languages:**
+[English](README.md) | [中文](README_zh.md)
+
 ### Project Structure
 
 - __Core/__  
@@ -11,4 +16,4 @@
 ### Compilation & Development Environment
 
 This project uses CLion and ST-Link for compilation, debugging, and flashing.  
-For usage instructions, please refer to the Jiaolong 2026 Feishu CLion Debugging Documentation.  
+For usage instructions, please refer to the Jiaoloong 2026 Feishu CLion Debugging Documentation.  
