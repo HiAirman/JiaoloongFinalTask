@@ -1,7 +1,5 @@
 ## 交龙小云台项目仓库
 
-# 项目名称
-
 🌐 **语言:**
 [English](README.md) | [中文](README_zh.md)
 

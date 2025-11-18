@@ -1,7 +1,5 @@
 ## Jiaolong Small Gimbal Project Repository
 
-# Project Name
-
 🌐 **Languages:**
 [English](README.md) | [中文](README_zh.md)
 
