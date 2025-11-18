@@ -21,8 +21,21 @@ typedef struct {
 
 typedef struct {
     float pitch_motor_position, yaw_motor_position;
+    float pitch_feedforward_intensity;
+    uint32_t timestamp;
+    uint32_t sequence = 0;
+} motor_control_data_t;
+
+typedef struct {
+    float pitch_motor_current, yaw_motor_current;
     uint32_t timestamp;
     uint32_t sequence = 0;
 } motor_output_data_t;
+
+typedef struct {
+    float pitch, roll, yaw;
+    uint32_t timestamp;
+    uint32_t sequence = 0;
+} imu_output_data_t;
 
 #endif //JIAOLOONGFINALTASK_DATA_TYPES_H

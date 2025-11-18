@@ -27,13 +27,13 @@ osThreadAttr_t control_task_attribute{
         imu_data_t imu_data;
         osMessageQueueGet(imu_to_control_queue_handle, &imu_data, nullptr, osWaitForever);
         //计算目标位置
-        motor_output_data_t motor_output_data, unused_data;
+        motor_control_data_t motor_control_data, unused_data;
         //计算前馈角度
         //发给motor_task
         //get old ones (try semantics)
         osMessageQueueGet(control_to_motor_queue_handle, &unused_data, nullptr, 0);
         //send (no delay
-        osMessageQueuePut(control_to_motor_queue_handle, &motor_output_data, 0, 0);
+        osMessageQueuePut(control_to_motor_queue_handle, &motor_control_data, 0, 0);
 
         osDelayUntil(ticks + TASK_DELAY_TIME_CONTROL_TASK);
     }
