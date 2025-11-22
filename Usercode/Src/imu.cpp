@@ -21,7 +21,9 @@ IMU::IMU(const float& dt,
             { R_imu[2][0], R_imu[2][1], R_imu[2][2] } },
     gyro_bias_{ gyro_bias[0], gyro_bias[1], gyro_bias[2] } {}
 
-void IMU::init(EulerAngle_t euler_deg_init) {}
+void IMU::init(EulerAngle_t euler_deg_init) {
+    euler_deg_ = euler_deg_init;
+}
 
 void IMU::readSensor() {
     uint8_t raw_range;
@@ -63,4 +65,21 @@ void IMU::readSensor() {
     raw_data_.temp[0] = temp_int11 * 0.125f + 23.0f;
 }
 
-void IMU::update(void) {}
+void IMU::update(void) {
+    // 线性滤波解算
+    float alpha = 0.95;
+    float pitch_acc;
+    float pitch_gyro, yaw_gyro;
+    pitch_acc = atan2(-raw_data_.accel[0],
+                      sqrt(pow(raw_data_.accel[1], 2)
+                          + pow(raw_data_.accel[2], 2))) * 180.f / M_PI;
+    pitch_gyro = raw_data_.gyro[1];
+    yaw_gyro = sqrt(pow(raw_data_.gyro[0], raw_data_.gyro[2]));
+    euler_deg_.pitch = alpha * (euler_deg_.pitch + pitch_gyro * 0.001) + (1 - alpha) * pitch_acc;
+    euler_deg_.yaw += yaw_gyro * 0.001;
+
+    euler_rad_.pitch = euler_deg_.pitch / 180.0f * M_PI; // 同步更新
+    euler_rad_.yaw = euler_deg_.yaw / 180.0f * M_PI;
+    euler_rad_.roll = euler_deg_.roll / 180.0f * M_PI;
+    // mahony 解算
+}
