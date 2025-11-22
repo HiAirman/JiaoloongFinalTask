@@ -23,4 +23,7 @@
 #define TASK_DELAY_TIME_IMU_TASK        14
 #define TASK_DELAY_TIME_MOTOR_TASK      1
 
+//Gimbal settings
+
+
 #endif //JIAOLOONGFINALTASK_GIMBAL_SETTINGS_H
