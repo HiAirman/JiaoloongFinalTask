@@ -6,6 +6,7 @@
 
 #include <cmath>
 
+#include "main.h"
 #include "mahony.h"
 #include "bmi088.h"
 
@@ -74,7 +75,7 @@ void IMU::update(void) {
                       sqrt(pow(raw_data_.accel[1], 2)
                           + pow(raw_data_.accel[2], 2))) * 180.f / M_PI;
     pitch_gyro = raw_data_.gyro[1];
-    yaw_gyro = sqrt(pow(raw_data_.gyro[0], raw_data_.gyro[2]));
+    yaw_gyro = sqrt(pow(raw_data_.gyro[0], 2) + pow(raw_data_.gyro[2], 2));
     euler_deg_.pitch = alpha * (euler_deg_.pitch + pitch_gyro * 0.001) + (1 - alpha) * pitch_acc;
     euler_deg_.yaw += yaw_gyro * 0.001;
 

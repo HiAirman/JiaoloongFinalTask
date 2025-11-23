@@ -47,9 +47,9 @@ osThreadAttr_t imu_task_attribute{
         //传输数据给control_task
         //get old ones (try semantics)
         imu_data_t unused_data;
-        osMessageQueueGet(control_to_motor_queue_handle, &unused_data, nullptr, 0);
+        osMessageQueueGet(imu_to_control_queue_handle, &unused_data, nullptr, 0);
         //send (no delay
-        osMessageQueuePut(control_to_motor_queue_handle, &imu_data, 0, 0);
+        osMessageQueuePut(imu_to_control_queue_handle, &imu_data, 0, 0);
 
         osDelayUntil(ticks + TASK_DELAY_TIME_IMU_TASK);
     }
