@@ -9,6 +9,6 @@
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
     if (huart == &huart3) {
         //dbus
-        controller.dbus_isr_callback();
+        controller.dbus_isr_callback(Size);
     }
 }

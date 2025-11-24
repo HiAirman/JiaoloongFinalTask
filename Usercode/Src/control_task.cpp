@@ -11,6 +11,8 @@
 #include "user_tasks.h"
 
 float pitch, roll, yaw;
+float chx[4];
+ControllerSwState swx[2];
 
 osThreadId_t control_task_handle;
 osThreadAttr_t control_task_attribute{
@@ -28,6 +30,14 @@ osThreadAttr_t control_task_attribute{
         pitch = imu_data.pitch;
         roll = imu_data.roll;
         yaw = imu_data.yaw;
+        controller_data_t controller_data;
+        osMessageQueueGet(dbus_to_control_queue_handle, &controller_data, nullptr, osWaitForever);
+        chx[0] = controller_data.ch0;
+        chx[1] = controller_data.ch1;
+        chx[2] = controller_data.ch2;
+        chx[3] = controller_data.ch3;
+        swx[0] = controller_data.sw1;
+        swx[1] = controller_data.sw2;
         osDelayUntil(ticks + TASK_DELAY_TIME_CONTROL_TASK);
     }
     while (true) {
