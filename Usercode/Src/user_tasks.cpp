@@ -12,6 +12,7 @@
 #include "can_tx_task.h"
 #include "imu_task.h"
 #include "motor_task.h"
+#include "bmi088.h"
 
 //Message Queues
 //覆盖式队列：
@@ -61,8 +62,14 @@ osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
 
 //tasks are moved into their files
 
+void initialize_all_peripherals() {
+    bmi088_init();
+}
+
 void user_task_init() {
     //Initialization初始化各组件
+    initialize_all_peripherals();
+
     //MassageQueues & Semaphores & Eventflags开启各线程间通信
     dbus_to_control_queue_handle = osMessageQueueNew(1, sizeof(controller_data_t), &dbus_to_control_queue_attribute);
     imu_to_control_queue_handle = osMessageQueueNew(1, sizeof(imu_data_t), &imu_to_control_queue_attribute);
@@ -72,8 +79,13 @@ void user_task_init() {
     motor_to_can_tx_queue_handle = osMessageQueueNew(1, 10, &motor_to_can_tx_queue_attribute);
 
     //Threads开启各线程
+    //test
+    control_task_handle = osThreadNew(control_task, nullptr, &control_task_attribute);
+    imu_task_handle = osThreadNew(imu_task, nullptr, &imu_task_attribute);
+    /*
     control_task_handle = osThreadNew(control_task, nullptr, &control_task_attribute);
     can_tx_task_handle = osThreadNew(can_tx_task, nullptr, &can_tx_task_attribute);
     imu_task_handle = osThreadNew(imu_task, nullptr, &imu_task_attribute);
     motor_task_handle = osThreadNew(motor_task, nullptr, &motor_task_attribute);
+    */
 }

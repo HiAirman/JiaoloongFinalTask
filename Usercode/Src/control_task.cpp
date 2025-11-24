@@ -10,6 +10,8 @@
 #include "data_types.h"
 #include "user_tasks.h"
 
+float pitch, roll, yaw;
+
 osThreadId_t control_task_handle;
 osThreadAttr_t control_task_attribute{
     .name = "control_task",
@@ -18,6 +20,16 @@ osThreadAttr_t control_task_attribute{
 };
 
 [[noreturn]] void control_task(void*) {
+    //testing
+    while (true) {
+        auto ticks = osKernelGetTickCount();
+        imu_data_t imu_data;
+        osMessageQueueGet(imu_to_control_queue_handle, &imu_data, nullptr, osWaitForever);
+        pitch = imu_data.pitch;
+        roll = imu_data.roll;
+        yaw = imu_data.yaw;
+        osDelayUntil(ticks + TASK_DELAY_TIME_CONTROL_TASK);
+    }
     while (true) {
         auto ticks = osKernelGetTickCount();
         //接收遥控数据
