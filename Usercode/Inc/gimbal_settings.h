@@ -23,11 +23,18 @@
 #define TASK_DELAY_TIME_IMU_TASK        14
 #define TASK_DELAY_TIME_MOTOR_TASK      1
 
-//Gimbal settings
+//imu settings
+
 #define IMU_CALCULATE_DELTA_TIME        0.001f
 #define IMU_FUSION_COEFFICIENT          1
 #define IMU_G_THRESHOLD                 1
 #define IMU_GYRO_BIAS                   {0,0,0}
+
+//motor settings
+
+//ID should in range 1 - 7
+#define MOTOR_PITCH_ID                  1
+#define MOTOR_YAW_ID                    2
 
 
 #endif //JIAOLOONGFINALTASK_GIMBAL_SETTINGS_H

@@ -34,6 +34,7 @@ typedef struct {
 } motor_control_data_t;
 
 typedef struct {
+    // 电流单位 A
     float pitch_motor_current, yaw_motor_current;
     uint32_t timestamp;
     uint32_t sequence = 0;
