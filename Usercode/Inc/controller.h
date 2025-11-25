@@ -24,6 +24,8 @@ public:
     //called in uart isr
     void dbus_isr_callback(uint16_t size);
 
+    bool is_controller_connected();
+
 private:
     uint32_t sequence = 0;
 

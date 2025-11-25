@@ -5,6 +5,7 @@
 #include "control_task.h"
 
 #include "cmsis_os2.h"
+#include "controller.h"
 
 #include "gimbal_settings.h"
 #include "data_types.h"
@@ -30,7 +31,9 @@ osThreadAttr_t control_task_attribute{
         pitch = imu_data.pitch;
         roll = imu_data.roll;
         yaw = imu_data.yaw;
+        //if (controller.is_controller_connected()) {
         controller_data_t controller_data;
+
         osMessageQueueGet(dbus_to_control_queue_handle, &controller_data, nullptr, osWaitForever);
         chx[0] = controller_data.ch0;
         chx[1] = controller_data.ch1;
@@ -38,7 +41,8 @@ osThreadAttr_t control_task_attribute{
         chx[3] = controller_data.ch3;
         swx[0] = controller_data.sw1;
         swx[1] = controller_data.sw2;
-        osDelayUntil(ticks + TASK_DELAY_TIME_CONTROL_TASK);
+        //}
+        //osDelayUntil(ticks + TASK_DELAY_TIME_CONTROL_TASK);
     }
     while (true) {
         auto ticks = osKernelGetTickCount();

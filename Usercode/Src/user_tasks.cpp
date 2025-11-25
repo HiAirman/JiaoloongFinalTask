@@ -13,6 +13,7 @@
 #include "imu_task.h"
 #include "motor_task.h"
 #include "bmi088.h"
+#include "controller.h"
 
 //Message Queues
 //覆盖式队列：
@@ -64,6 +65,7 @@ osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
 
 void initialize_all_peripherals() {
     bmi088_init();
+    controller.init();
 }
 
 void user_task_init() {

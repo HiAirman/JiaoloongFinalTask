@@ -8,6 +8,11 @@
 #include "usart.h"
 #include "user_tasks.h"
 
+void Controller::init() {
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_data_, 32);
+}
+
+
 void Controller::dbus_isr_callback(uint16_t size) {
     //接收uart数据
     if (size != 16) {
@@ -42,17 +47,24 @@ void Controller::dbus_isr_callback(uint16_t size) {
     } else if (sw2_temp == RC_SW_DOWN) {
         controller_data_.sw2 = CONTROLLER_SW_DOWN;
     }
+    controller_data_.timestamp = HAL_GetTick();
+    controller_data_.sequence++;
     //发送数据包
     // to control task
     controller_data_t unused_data;
     osMessageQueueGet(dbus_to_control_queue_handle, &unused_data, nullptr, 0);
     osMessageQueuePut(dbus_to_control_queue_handle, &controller_data_, 0, 0);
     // to motor task
-    uint8_t unused_flag;
-    osMessageQueueGet(dbus_to_motor_queue_handle, &unused_flag, nullptr, 0);
-    osMessageQueuePut(dbus_to_motor_queue_handle, &sw1_flag_, 0, 0);
+    // uint8_t unused_flag;
+    // osMessageQueueGet(dbus_to_motor_queue_handle, &unused_flag, nullptr, 0);
+    // osMessageQueuePut(dbus_to_motor_queue_handle, &sw1_flag_, 0, 0);
     //重新调用接收
     HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_data_, 32);
 }
+
+bool Controller::is_controller_connected() {
+    return HAL_GetTick() - 50 < controller_data_.timestamp;
+}
+
 
 Controller controller;
