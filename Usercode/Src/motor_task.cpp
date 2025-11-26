@@ -37,12 +37,26 @@ float pitch_current, yaw_current;
             yaw_angular_velocity = feedback_data.ecd_angular_velocity_yaw;
         }
         //从dbus_isr接收右拨杆使能
+        int8_t flag;
+        osMessageQueueGet(dbus_to_motor_queue_handle, &flag, nullptr, 0);
         //从control_task接收目标位置和前馈数据
 
         motor_output_data_t output_data;
         //给can_tx_task传输输出电流值
-        //osMessageQueuePut(motor_to_can_tx_queue_handle, &output_data, 0, 0);
+        output_data.yaw_motor_current = 0.0;
+        if (flag == 1) {
+            // UP
+            output_data.pitch_motor_current = 0.2;
+        } else if (flag == -1) {
+            // DOWN
+            output_data.pitch_motor_current = 0.0;
+        }
+        output_data.timestamp = osKernelGetTickCount();
+        output_data.sequence++;
 
-        osDelayUntil(ticks + TASK_DELAY_TIME_MOTOR_TASK);
+        osMessageQueuePut(motor_to_can_tx_queue_handle, &output_data, 0, 0);
+        if (ticks + TASK_DELAY_TIME_MOTOR_TASK > osKernelGetTickCount()) {
+            osDelayUntil(ticks + TASK_DELAY_TIME_MOTOR_TASK);
+        }
     }
 }

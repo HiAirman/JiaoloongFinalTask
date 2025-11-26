@@ -88,6 +88,7 @@ void user_task_init() {
     //test
     control_task_handle = osThreadNew(control_task, nullptr, &control_task_attribute);
     imu_task_handle = osThreadNew(imu_task, nullptr, &imu_task_attribute);
+    can_tx_task_handle = osThreadNew(can_tx_task, nullptr, &can_tx_task_attribute);
     motor_task_handle = osThreadNew(motor_task, nullptr, &motor_task_attribute);
     /*
     control_task_handle = osThreadNew(control_task, nullptr, &control_task_attribute);
