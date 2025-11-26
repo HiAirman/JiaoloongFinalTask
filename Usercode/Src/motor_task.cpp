@@ -47,8 +47,8 @@ float pitch_current, yaw_current;
         if (flag == 1) {
             // UP
             output_data.pitch_motor_current = 0.2;
-        } else if (flag == -1) {
-            // DOWN
+        } else if (flag == -1 || flag == 0) {
+            // DOWN or MID
             output_data.pitch_motor_current = 0.0;
         }
         output_data.timestamp = osKernelGetTickCount();

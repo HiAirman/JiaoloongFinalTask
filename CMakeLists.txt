@@ -42,7 +42,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         Usercode/Src/imu.cpp
         Usercode/Src/callback.cpp
         Usercode/Src/controller.cpp
-        Usercode/Src/can_rx.cpp)
+        Usercode/Src/can_rx.cpp
+        Usercode/Src/motor.cpp
+        Usercode/Src/pid.cpp
+        Usercode/Src/pid.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
