@@ -55,9 +55,9 @@ void Controller::dbus_isr_callback(uint16_t size) {
     osMessageQueueGet(dbus_to_control_queue_handle, &unused_data, nullptr, 0);
     osMessageQueuePut(dbus_to_control_queue_handle, &controller_data_, 0, 0);
     // to motor task
-    // uint8_t unused_flag;
-    // osMessageQueueGet(dbus_to_motor_queue_handle, &unused_flag, nullptr, 0);
-    // osMessageQueuePut(dbus_to_motor_queue_handle, &sw1_flag_, 0, 0);
+    uint8_t unused_flag;
+    osMessageQueueGet(dbus_to_motor_queue_handle, &unused_flag, nullptr, 0);
+    osMessageQueuePut(dbus_to_motor_queue_handle, &sw1_flag_, 0, 0);
     //重新调用接收
     HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_data_, 32);
 }
