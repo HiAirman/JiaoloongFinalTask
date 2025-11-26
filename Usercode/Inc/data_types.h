@@ -35,10 +35,11 @@ typedef struct {
 
 typedef struct {
     // degree degree/s A ℃
-    float ecd_angle_pitch, ecd_angular_velocity_pitch,
-          real_current_pitch, temperature_pitch;
-    float ecd_angle_yaw, ecd_angular_velocity_yaw,
-          real_current_yaw, temperature_yaw;
+    int8_t updated = 0; // pitch -1 yaw 1
+    float ecd_angle_pitch = 0, ecd_angular_velocity_pitch = 0,
+          real_current_pitch = 0, temperature_pitch = 0;
+    float ecd_angle_yaw = 0, ecd_angular_velocity_yaw = 0,
+          real_current_yaw = 0, temperature_yaw = 0;
     uint32_t timestamp;
     uint32_t sequence = 0;
 } motor_feedback_data_t;

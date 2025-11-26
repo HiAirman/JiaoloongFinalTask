@@ -33,8 +33,8 @@
 //motor settings
 
 //ID should in range 1 - 7
-#define MOTOR_PITCH_ID                  1
-#define MOTOR_YAW_ID                    2
+#define MOTOR_PITCH_ID                  4
+#define MOTOR_YAW_ID                    1
 
 
 #endif //JIAOLOONGFINALTASK_GIMBAL_SETTINGS_H

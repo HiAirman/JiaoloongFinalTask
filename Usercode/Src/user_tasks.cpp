@@ -13,6 +13,7 @@
 #include "imu_task.h"
 #include "motor_task.h"
 #include "bmi088.h"
+#include "can_rx.h"
 #include "controller.h"
 
 //Message Queues
@@ -66,6 +67,9 @@ osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
 void initialize_all_peripherals() {
     bmi088_init();
     controller.init();
+    can_rx_init();
+    //motor init
+    can_rx_interrupt_init();
 }
 
 void user_task_init() {
@@ -84,6 +88,7 @@ void user_task_init() {
     //test
     control_task_handle = osThreadNew(control_task, nullptr, &control_task_attribute);
     imu_task_handle = osThreadNew(imu_task, nullptr, &imu_task_attribute);
+    motor_task_handle = osThreadNew(motor_task, nullptr, &motor_task_attribute);
     /*
     control_task_handle = osThreadNew(control_task, nullptr, &control_task_attribute);
     can_tx_task_handle = osThreadNew(can_tx_task, nullptr, &can_tx_task_attribute);

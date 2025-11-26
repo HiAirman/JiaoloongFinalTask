@@ -14,8 +14,15 @@ motor_feedback_data_t feedback_data;
 
 void can_rx_init() {
     CAN_FilterTypeDef filter = {
-        .FilterIdHigh = 0x0204 + MOTOR_PITCH_ID, // first one for 16 bit mode
-        .FilterIdLow = 0x0204 + MOTOR_YAW_ID, // second one for 16 bits mode
+        .FilterIdHigh = (0x204 + MOTOR_PITCH_ID) << 5, // first one for 16 bit mode
+        .FilterIdLow = (0x204 + MOTOR_YAW_ID) << 5, // second one for 16 bits mode
+        .FilterMaskIdHigh = 0x7FF << 5, // mask: we only care about first 11 bits
+        .FilterMaskIdLow = 0x7FF << 5, // mask: we only care about first 11 bits
+        .FilterFIFOAssignment = CAN_FILTER_FIFO0,
+        .FilterBank = 0, // filter bank NO.0
+        .FilterMode = CAN_FILTERMODE_IDMASK,
+        .FilterScale = CAN_FILTERSCALE_16BIT,
+        .FilterActivation = ENABLE
     };
     HAL_CAN_ConfigFilter(&hcan1, &filter);
     HAL_CAN_Start(&hcan1);
@@ -32,18 +39,22 @@ void can_rx_isr() {
     uint8_t rx_data[8];
     HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0, &rx_header, rx_data);
     //解包 Update feedback data
-    if (rx_header.StdId = 0x204 + MOTOR_PITCH_ID) {
-        feedback_data.ecd_angle_pitch = (rx_data[0] << 8 | rx_data[1]) / 8191 * 360;
-        feedback_data.ecd_angular_velocity_pitch = (rx_data[2] << 8 | rx_data[3]) / 360 * 60;
-        feedback_data.real_current_pitch = (rx_data[4] << 8 | rx_data[5]) / 16384 * 3;
-        feedback_data.temperature_pitch = (rx_data[6]);
+    if (rx_header.StdId == 0x204 + MOTOR_PITCH_ID) {
+        feedback_data.updated = -1;
+        feedback_data.ecd_angle_pitch = (rx_data[0] << 8 | rx_data[1]) / 8191.0f * 360.0f;
+        feedback_data.ecd_angular_velocity_pitch = (rx_data[2] << 8 | rx_data[3]) / 360.0f * 60.0f;
+        feedback_data.real_current_pitch = (rx_data[4] << 8 | rx_data[5]) / 16384.0f * 3.0f;
+        feedback_data.temperature_pitch == (rx_data[6]);
     }
-    if (rx_header.StdId = 0x204 + MOTOR_YAW_ID) {
-        feedback_data.ecd_angle_yaw = (rx_data[0] << 8 | rx_data[1]) / 8191 * 360;
-        feedback_data.ecd_angular_velocity_yaw = (rx_data[2] << 8 | rx_data[3]) / 360 * 60;
-        feedback_data.real_current_yaw = (rx_data[4] << 8 | rx_data[5]) / 16384 * 3;
+    if (rx_header.StdId == 0x204 + MOTOR_YAW_ID) {
+        feedback_data.updated = 1;
+        feedback_data.ecd_angle_yaw = (rx_data[0] << 8 | rx_data[1]) / 8191.0f * 360.0f;
+        feedback_data.ecd_angular_velocity_yaw = (rx_data[2] << 8 | rx_data[3]) / 360.0f * 60.0f;
+        feedback_data.real_current_yaw = (rx_data[4] << 8 | rx_data[5]) / 16384.0f * 3.0f;
         feedback_data.temperature_yaw = (rx_data[6]);
     }
+    feedback_data.timestamp = osKernelGetTickCount();
+    feedback_data.sequence++;
     //发包给motor_task
     motor_feedback_data_t unused_data;
     osMessageQueueGet(can_rx_to_motor_queue_handle, &unused_data, nullptr, 0);
