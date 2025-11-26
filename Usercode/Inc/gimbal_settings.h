@@ -9,7 +9,7 @@
 //task settings
 
 //STACK SIZE OF THE TASKS
-#define TASK_STACK_SIZE_DEFAULT         8192
+#define TASK_STACK_SIZE_DEFAULT         4096
 
 //PRIORITIES OF THE TASKS
 #define TASK_PRIORITY_CONTROL_TASK      (osPriority_t)osPriorityNormal

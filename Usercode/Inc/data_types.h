@@ -4,11 +4,18 @@
 
 #ifndef JIAOLOONGFINALTASK_DATA_TYPES_H
 #define JIAOLOONGFINALTASK_DATA_TYPES_H
-#include <cstdint>
+#include "main.h"
+
+// chx: -1 ~ +1 swx: -1 0 1
+enum ControllerSwState {
+    CONTROLLER_SW_DOWN = -1,
+    CONTROLLER_SW_MID,
+    CONTROLLER_SW_UP
+};
 
 typedef struct {
-    float ch1, ch2, ch3, ch4;
-    uint8_t sw1, sw2;
+    float ch0, ch1, ch2, ch3;
+    ControllerSwState sw1, sw2; // sw1 左侧 sw2 右侧
     uint32_t timestamp;
     uint32_t sequence = 0;
 } controller_data_t;
