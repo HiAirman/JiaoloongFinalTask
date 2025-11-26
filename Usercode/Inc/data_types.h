@@ -34,6 +34,16 @@ typedef struct {
 } motor_control_data_t;
 
 typedef struct {
+    // degree degree/s A ℃
+    float ecd_angle_pitch, ecd_angular_velocity_pitch,
+          real_current_pitch, temperature_pitch;
+    float ecd_angle_yaw, ecd_angular_velocity_yaw,
+          real_current_yaw, temperature_yaw;
+    uint32_t timestamp;
+    uint32_t sequence = 0;
+} motor_feedback_data_t;
+
+typedef struct {
     // 电流单位 A
     float pitch_motor_current, yaw_motor_current;
     uint32_t timestamp;
