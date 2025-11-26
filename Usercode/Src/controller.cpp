@@ -13,7 +13,7 @@ void Controller::init() {
 }
 
 
-void Controller::dbus_isr_callback(uint16_t size) {
+void Controller::dbus_isr(uint16_t size) {
     //接收uart数据
     if (size != 16) {
         HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_data_, 32);

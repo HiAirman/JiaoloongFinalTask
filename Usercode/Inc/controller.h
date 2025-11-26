@@ -22,7 +22,7 @@ class Controller {
 public:
     void init();
     //called in uart isr
-    void dbus_isr_callback(uint16_t size);
+    void dbus_isr(uint16_t size);
 
     bool is_controller_connected();
 
