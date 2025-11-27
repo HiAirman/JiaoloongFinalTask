@@ -19,12 +19,36 @@ public: // functions
           float ki_speed_pid,
           float kd_speed_pid);
 
-    void set_target();
+    void init(float);
+
+    //set target angle
+    void set_target(float target_angle);
+    //process feedback data
+    void set_feedback(float feedback_angle, float feedback_speed);
+    //get feedforward torque
+    void set_feedforward_torque(float feedforward_torque);
+    //output the current
     float get_current();
 
-public: //variables
+private: //functions
+    void process_feedback();
+    float calculate_feedforward_speed(float target_angle, float feedback_angle);
+
 private:
-    PID position_pid, speed_pid;
+    // PID object
+    PID position_pid_, speed_pid_;
+
+    // target
+    float target_angle_, target_speed_;
+    // feedback
+    float raw_feedback_angle_;
+    float last_raw_feedback_angle;
+    float feedback_angle_, feedback_speed_;
+    // feedforward
+    float feedforward_torque_, feedforward_speed_;
+    float feedforward_speed_k_;
+    // output
+    float output_current_;
 };
 
 
