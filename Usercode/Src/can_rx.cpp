@@ -26,6 +26,7 @@ void can_rx_init() {
     };
     HAL_CAN_ConfigFilter(&hcan1, &filter);
     HAL_CAN_Start(&hcan1);
+    can_rx_interrupt_init();
 }
 
 void can_rx_interrupt_init() {

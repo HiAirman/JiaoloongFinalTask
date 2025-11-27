@@ -69,7 +69,6 @@ void initialize_all_peripherals() {
     controller.init();
     can_rx_init();
     //motor init
-    can_rx_interrupt_init();
 }
 
 void user_task_init() {
