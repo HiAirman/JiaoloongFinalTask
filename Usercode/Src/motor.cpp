@@ -50,8 +50,19 @@ void Motor::set_feedforward_torque(float feedforward_torque) {
     feedforward_torque_ = feedforward_torque;
 }
 
+void Motor::check_safty(float current, float temperature) {
+    if (current >= 2.5 || temperature >= 80) {
+        safety_flag_ = false;
+    }
+}
+
 
 float Motor::get_current() {
+    //safety
+    if (!safety_flag_) {
+        return 0;
+    }
+
     // calculate target speed
     target_speed_ = position_pid_.calc(target_angle_, feedback_angle_)
         + calculate_feedforward_speed(target_angle_, feedback_angle_);

@@ -31,6 +31,8 @@ public: // functions
     void set_feedback(float feedback_angle, float feedback_speed);
     //get feedforward torque
     void set_feedforward_torque(float feedforward_torque);
+    //check safety
+    void check_safty(float current, float temperature);
     //output the current
     float get_current();
 
@@ -41,6 +43,9 @@ private: //functions
 private:
     // PID object
     PID position_pid_, speed_pid_;
+
+    // safety
+    bool safety_flag_;
 
     // target
     float target_angle_, target_speed_;
