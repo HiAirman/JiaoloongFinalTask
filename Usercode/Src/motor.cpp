@@ -68,6 +68,7 @@ void Motor::process_feedback() {
         delta_angle += 360.f;
     }
     feedback_angle_ += delta_angle;
+    last_raw_feedback_angle = raw_feedback_angle_;
 }
 
 float Motor::calculate_feedforward_speed(float target_angle, float feedback_angle) {
