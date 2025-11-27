@@ -50,7 +50,7 @@ void Motor::set_feedforward_torque(float feedforward_torque) {
     feedforward_torque_ = feedforward_torque;
 }
 
-void Motor::check_safty(float current, float temperature) {
+void Motor::check_safety(float current, float temperature) {
     if (current >= 2.5 || temperature >= 80) {
         safety_flag_ = false;
     }

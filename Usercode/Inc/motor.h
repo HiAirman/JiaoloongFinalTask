@@ -32,7 +32,7 @@ public: // functions
     //get feedforward torque
     void set_feedforward_torque(float feedforward_torque);
     //check safety
-    void check_safty(float current, float temperature);
+    void check_safety(float current, float temperature);
     //output the current
     float get_current();
 
