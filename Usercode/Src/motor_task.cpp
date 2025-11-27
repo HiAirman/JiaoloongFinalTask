@@ -23,6 +23,10 @@ float pitch_angle, yaw_angle;
 float pitch_angular_velocity, yaw_angular_velocity;
 float pitch_current, yaw_current;
 
+float calculate_pitch_feedforward(float pitch_angle) {
+    return 0.0;
+}
+
 [[noreturn]] void motor_task(void*) {
     Motor pitch_motor, yaw_motor;
     pitch_motor = Motor(MOTOR_PITCH_POSITION_PID_KP,
@@ -60,21 +64,32 @@ float pitch_current, yaw_current;
         int8_t flag;
         osMessageQueueGet(dbus_to_motor_queue_handle, &flag, nullptr, 0);
         //从control_task接收目标位置和前馈数据
+        motor_control_data_t motor_control_data;
 
+        //Motor main loop
         motor_output_data_t output_data;
+        //pitch
+        pitch_motor.set_target(motor_control_data.pitch_motor_position);
+        pitch_motor.set_feedback(pitch_angle, pitch_angular_velocity);
+        pitch_motor.set_feedforward_torque(calculate_pitch_feedforward(pitch_angle));
+        output_data.pitch_motor_current = pitch_motor.get_current();
+        //yaw
+        yaw_motor.set_target(motor_control_data.yaw_motor_position);
+        yaw_motor.set_feedback(yaw_angle, yaw_angular_velocity);
+        yaw_motor.set_feedforward_torque(0.0f);
+        output_data.yaw_motor_current = yaw_motor.get_current();
+
         //给can_tx_task传输输出电流值
-        output_data.yaw_motor_current = 0.0;
-        if (flag == 1) {
-            // UP
-            output_data.pitch_motor_current = 0.2;
-        } else if (flag == -1 || flag == 0) {
+        if (flag == -1 || flag == 0) {
             // DOWN or MID
             output_data.pitch_motor_current = 0.0;
+            output_data.yaw_motor_current = 0.0;
         }
         output_data.timestamp = osKernelGetTickCount();
         output_data.sequence++;
-
         osMessageQueuePut(motor_to_can_tx_queue_handle, &output_data, 0, 0);
+
+        //安全delay
         if (ticks + TASK_DELAY_TIME_MOTOR_TASK > osKernelGetTickCount()) {
             osDelayUntil(ticks + TASK_DELAY_TIME_MOTOR_TASK);
         }
