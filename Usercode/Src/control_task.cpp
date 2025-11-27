@@ -54,7 +54,14 @@ osThreadAttr_t control_task_attribute{
         osMessageQueueGet(imu_to_control_queue_handle, &imu_data, nullptr, osWaitForever);
         //计算目标位置
         motor_control_data_t motor_control_data, unused_data;
-        //计算前馈角度
+        motor_control_data.pitch_motor_position = controller_data.ch1 * CONTROL_PITCH_RANGE;
+        if (motor_control_data.pitch_motor_position >= CONTROL_PITCH_MAX) {
+            motor_control_data.pitch_motor_position = CONTROL_PITCH_MAX;
+        }
+        if (motor_control_data.pitch_motor_position <= CONTROL_PITCH_MIN) {
+            motor_control_data.pitch_motor_position = CONTROL_PITCH_MIN;
+        }
+        motor_control_data.yaw_motor_position = controller_data.ch0 * CONTROL_YAW_RANGE;
         //发给motor_task
         //get old ones (try semantics)
         osMessageQueueGet(control_to_motor_queue_handle, &unused_data, nullptr, 0);

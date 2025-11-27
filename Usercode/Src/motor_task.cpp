@@ -93,7 +93,7 @@ float calculate_pitch_feedforward(float pitch_angle) {
 
         //给can_tx_task传输输出电流值
         if (flag == -1 || flag == 0) {
-            // DOWN or MID
+            // DOWN or MID 取消使能
             output_data.pitch_motor_current = 0.0;
             output_data.yaw_motor_current = 0.0;
         }

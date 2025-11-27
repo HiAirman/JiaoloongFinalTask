@@ -6,7 +6,7 @@
 #ifndef JIAOLOONGFINALTASK_GIMBAL_SETTINGS_H
 #define JIAOLOONGFINALTASK_GIMBAL_SETTINGS_H
 
-//task settings
+//**task settings
 
 //STACK SIZE OF THE TASKS
 #define TASK_STACK_SIZE_DEFAULT         4096
@@ -23,20 +23,28 @@
 #define TASK_DELAY_TIME_IMU_TASK        14
 #define TASK_DELAY_TIME_MOTOR_TASK      1
 
-//imu settings
+//**control_task settings
+
+#define CONTROL_PITCH_RANGE             1.0
+#define CONTROL_PITCH_MAX               0.5
+#define CONTROL_PITCH_MIN               - 0.5
+#define CONTROL_YAW_RANGE               180
+
+//**imu settings
 
 #define IMU_CALCULATE_DELTA_TIME        0.001f
 #define IMU_FUSION_COEFFICIENT          1
 #define IMU_G_THRESHOLD                 1
 #define IMU_GYRO_BIAS                   {0,0,0}
 
-//motor settings
+//**motor settings
 
-//ID should in range 1 - 7
+//ID SHOULD IN RANGE 1 - 7
 #define MOTOR_PITCH_ID                  4
 #define MOTOR_YAW_ID                    1
 
-//pid settings
+//**pid settings
+
 // PITCH
 #define MOTOR_PITCH_POSITION_PID_KP     0.0
 #define MOTOR_PITCH_POSITION_PID_KI     0.0
