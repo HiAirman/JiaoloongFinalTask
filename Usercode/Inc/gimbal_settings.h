@@ -37,16 +37,27 @@
 #define MOTOR_YAW_ID                    1
 
 //pid settings
-#define MOTOR_POSITION_PID_KP           0.0
-#define MOTOR_POSITION_PID_KI           0.0
-#define MOTOR_POSITION_PID_KD           0.0
-#define MOTOR_POSITION_PID_I_MAX        0.0
-#define MOTOR_POSITION_PID_OUT_MAX      0.0
-#define MOTOR_SPEED_PID_KP              0.0
-#define MOTOR_SPEED_PID_KI              0.0
-#define MOTOR_SPEED_PID_KD              0.0
-#define MOTOR_SPEED_PID_I_MAX           0.0
-#define MOTOR_SPEED_PID_OUT_MAX         0.0
-
+// PITCH
+#define MOTOR_PITCH_POSITION_PID_KP     0.0
+#define MOTOR_PITCH_POSITION_PID_KI     0.0
+#define MOTOR_PITCH_POSITION_PID_KD     0.0
+#define MOTOR_PITCH_POSITION_PID_I_MAX  0.0
+#define MOTOR_PITCH_POSITION_PID_OUT_MAX 0.0
+#define MOTOR_PITCH_SPEED_PID_KP        0.0
+#define MOTOR_PITCH_SPEED_PID_KI        0.0
+#define MOTOR_PITCH_SPEED_PID_KD        0.0
+#define MOTOR_PITCH_SPEED_PID_I_MAX     0.0
+#define MOTOR_PITCH_SPEED_PID_OUT_MAX   0.0
+// YAW
+#define MOTOR_YAW_POSITION_PID_KP       0.0
+#define MOTOR_YAW_POSITION_PID_KI       0.0
+#define MOTOR_YAW_POSITION_PID_KD       0.0
+#define MOTOR_YAW_POSITION_PID_I_MAX    0.0
+#define MOTOR_YAW_POSITION_PID_OUT_MAX  0.0
+#define MOTOR_YAW_SPEED_PID_KP          0.0
+#define MOTOR_YAW_SPEED_PID_KI          0.0
+#define MOTOR_YAW_SPEED_PID_KD          0.0
+#define MOTOR_YAW_SPEED_PID_I_MAX       0.0
+#define MOTOR_YAW_SPEED_PID_OUT_MAX     0.0
 
 #endif //JIAOLOONGFINALTASK_GIMBAL_SETTINGS_H

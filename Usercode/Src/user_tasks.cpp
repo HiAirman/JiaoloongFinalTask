@@ -49,6 +49,11 @@ osMessageQueueId_t motor_to_can_tx_queue_handle;
 osMessageQueueAttr_t motor_to_can_tx_queue_attribute{
     .name = "motor_to_can_tx_queue",
 };
+//传输初始位置值
+osMessageQueueId_t imu_to_motor_queue_handle;
+osMessageQueueAttr_t imu_to_motor_queue_attribute{
+    .name = "motor_to_can_tx_queue",
+};
 
 //Semaphore
 // osSemaphoreId_t test_semaphore_handle;
@@ -76,12 +81,20 @@ void user_task_init() {
     initialize_all_peripherals();
 
     //MassageQueues & Semaphores & Eventflags开启各线程间通信
-    dbus_to_control_queue_handle = osMessageQueueNew(1, sizeof(controller_data_t), &dbus_to_control_queue_attribute);
-    imu_to_control_queue_handle = osMessageQueueNew(1, sizeof(imu_data_t), &imu_to_control_queue_attribute);
-    control_to_motor_queue_handle = osMessageQueueNew(1, 10, &control_to_motor_queue_attribute);
-    can_rx_to_motor_queue_handle = osMessageQueueNew(1, 10, &can_rx_to_motor_queue_attribute);
-    dbus_to_motor_queue_handle = osMessageQueueNew(1, 10, &dbus_to_motor_queue_attribute);
-    motor_to_can_tx_queue_handle = osMessageQueueNew(1, 10, &motor_to_can_tx_queue_attribute);
+    dbus_to_control_queue_handle =
+        osMessageQueueNew(1, sizeof(controller_data_t), &dbus_to_control_queue_attribute);
+    imu_to_control_queue_handle =
+        osMessageQueueNew(1, sizeof(imu_data_t), &imu_to_control_queue_attribute);
+    control_to_motor_queue_handle =
+        osMessageQueueNew(1, sizeof(motor_control_data_t), &control_to_motor_queue_attribute);
+    can_rx_to_motor_queue_handle =
+        osMessageQueueNew(1, sizeof(motor_feedback_data_t), &can_rx_to_motor_queue_attribute);
+    dbus_to_motor_queue_handle =
+        osMessageQueueNew(1, sizeof(int8_t), &dbus_to_motor_queue_attribute);
+    motor_to_can_tx_queue_handle =
+        osMessageQueueNew(1, sizeof(motor_output_data_t), &motor_to_can_tx_queue_attribute);
+    imu_to_motor_queue_handle =
+        osMessageQueueNew(1, sizeof(motor_initialize_data_t), &imu_to_control_queue_attribute);
 
     //Threads开启各线程
     //test

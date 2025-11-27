@@ -8,6 +8,7 @@
 
 #include "gimbal_settings.h"
 #include "data_types.h"
+#include "motor.h"
 #include "user_tasks.h"
 
 osThreadId_t motor_task_handle;
@@ -23,16 +24,35 @@ float pitch_angular_velocity, yaw_angular_velocity;
 float pitch_current, yaw_current;
 
 [[noreturn]] void motor_task(void*) {
+    Motor pitch_motor, yaw_motor;
+    pitch_motor = Motor(MOTOR_PITCH_POSITION_PID_KP,
+                        MOTOR_PITCH_POSITION_PID_KI,
+                        MOTOR_PITCH_POSITION_PID_KD,
+                        MOTOR_PITCH_SPEED_PID_KP,
+                        MOTOR_PITCH_SPEED_PID_KI,
+                        MOTOR_PITCH_SPEED_PID_KD);
+    yaw_motor = Motor(MOTOR_YAW_POSITION_PID_KP,
+                      MOTOR_YAW_POSITION_PID_KI,
+                      MOTOR_YAW_POSITION_PID_KD,
+                      MOTOR_YAW_SPEED_PID_KP,
+                      MOTOR_YAW_SPEED_PID_KI,
+                      MOTOR_YAW_SPEED_PID_KD);
+
+    motor_initialize_data_t motor_initialize_data;
+    osMessageQueueGet(imu_to_motor_queue_handle, &motor_initialize_data, nullptr,osWaitForever);
+    pitch_motor.init(motor_initialize_data.pitch_angle);
+    yaw_motor.init(motor_initialize_data.yaw_angle);
+
     while (true) {
         auto ticks = osKernelGetTickCount();
         //从can_rx_isr接收反馈角度数据
         motor_feedback_data_t feedback_data;
         osMessageQueueGet(can_rx_to_motor_queue_handle, &feedback_data, nullptr, osWaitForever);
-        if (feedback_data.updated = -1) {
+        if (feedback_data.updated == -1) {
             pitch_angle = feedback_data.ecd_angle_pitch;
             pitch_angular_velocity = feedback_data.ecd_angular_velocity_pitch;
         }
-        if (feedback_data.updated = 1) {
+        if (feedback_data.updated == 1) {
             yaw_angle = feedback_data.ecd_angle_yaw;
             yaw_angular_velocity = feedback_data.ecd_angular_velocity_yaw;
         }

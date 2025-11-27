@@ -57,4 +57,8 @@ typedef struct {
     uint32_t sequence = 0;
 } imu_output_data_t;
 
+typedef struct {
+    float pitch_angle, yaw_angle;
+} motor_initialize_data_t;
+
 #endif //JIAOLOONGFINALTASK_DATA_TYPES_H
