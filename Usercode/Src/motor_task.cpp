@@ -28,19 +28,28 @@ float calculate_pitch_feedforward(float pitch_angle) {
 }
 
 [[noreturn]] void motor_task(void*) {
+    //initialize part
     Motor pitch_motor, yaw_motor;
     pitch_motor = Motor(MOTOR_PITCH_POSITION_PID_KP,
                         MOTOR_PITCH_POSITION_PID_KI,
                         MOTOR_PITCH_POSITION_PID_KD,
+                        MOTOR_PITCH_POSITION_PID_I_MAX,
+                        MOTOR_PITCH_POSITION_PID_OUT_MAX,
                         MOTOR_PITCH_SPEED_PID_KP,
                         MOTOR_PITCH_SPEED_PID_KI,
-                        MOTOR_PITCH_SPEED_PID_KD);
+                        MOTOR_PITCH_SPEED_PID_KD,
+                        MOTOR_PITCH_SPEED_PID_I_MAX,
+                        MOTOR_PITCH_SPEED_PID_OUT_MAX);
     yaw_motor = Motor(MOTOR_YAW_POSITION_PID_KP,
                       MOTOR_YAW_POSITION_PID_KI,
                       MOTOR_YAW_POSITION_PID_KD,
+                      MOTOR_YAW_POSITION_PID_I_MAX,
+                      MOTOR_YAW_POSITION_PID_OUT_MAX,
                       MOTOR_YAW_SPEED_PID_KP,
                       MOTOR_YAW_SPEED_PID_KI,
-                      MOTOR_YAW_SPEED_PID_KD);
+                      MOTOR_YAW_SPEED_PID_KD,
+                      MOTOR_YAW_SPEED_PID_I_MAX,
+                      MOTOR_YAW_SPEED_PID_OUT_MAX);
 
     motor_initialize_data_t motor_initialize_data;
     osMessageQueueGet(imu_to_motor_queue_handle, &motor_initialize_data, nullptr,osWaitForever);
@@ -65,6 +74,9 @@ float calculate_pitch_feedforward(float pitch_angle) {
         osMessageQueueGet(dbus_to_motor_queue_handle, &flag, nullptr, 0);
         //从control_task接收目标位置和前馈数据
         motor_control_data_t motor_control_data;
+        //test
+        motor_control_data.pitch_motor_position = 0.0;
+        motor_control_data.yaw_motor_position = 0.0;
 
         //Motor main loop
         motor_output_data_t output_data;

@@ -10,14 +10,18 @@
 class Motor {
 public: // functions
     Motor():
-        Motor(0, 0, 0, 0, 0, 0) {}
+        Motor(0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
 
     Motor(float kp_position_pid,
           float ki_position_pid,
           float kd_position_pid,
+          float i_max_position_pid,
+          float out_max_position_pid,
           float kp_speed_pid,
           float ki_speed_pid,
-          float kd_speed_pid);
+          float kd_speed_pid,
+          float i_max_speed_pid,
+          float out_max_speed_pid);
 
     void init(float);
 

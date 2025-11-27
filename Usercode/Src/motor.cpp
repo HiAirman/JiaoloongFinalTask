@@ -7,19 +7,23 @@
 Motor::Motor(float kp_position_pid,
              float ki_position_pid,
              float kd_position_pid,
+             float i_max_position_pid,
+             float out_max_position_pid,
              float kp_speed_pid,
              float ki_speed_pid,
-             float kd_speed_pid) {
+             float kd_speed_pid,
+             float i_max_speed_pid,
+             float out_max_speed_pid) {
     position_pid_ = PID(kp_position_pid,
                         ki_position_pid,
                         kd_position_pid,
-                        0.0,
-                        0.0);
+                        i_max_position_pid,
+                        out_max_position_pid);
     speed_pid_ = PID(kp_speed_pid,
                      ki_speed_pid,
                      kd_speed_pid,
-                     0.0,
-                     0.0);
+                     i_max_speed_pid,
+                     out_max_speed_pid);
 }
 
 void Motor::init(float init_feedback_angle) {
@@ -57,7 +61,7 @@ float Motor::get_current() {
     if (output_torque >= 0) {
         return output_torque * 5.0f / 3.0f + 0.2; // current = torque * 5/3 +0.2
     }
-    return output_torque * 5.0f / 3.0f - 0.2;
+    return output_torque * 5.0f / 3.0f - 0.2; // current = torque * 5/3 +0.2
 }
 
 void Motor::process_feedback() {
