@@ -31,7 +31,7 @@ public: // functions
     void set_feedback(float feedback_angle, float feedback_speed);
     //get feedforward torque
     void set_feedforward_torque(float feedforward_torque);
-    //check safety
+    //check safety (no ways to reset but to reset the mcu)
     void check_safety(float current, float temperature);
     //output the current
     float get_current();

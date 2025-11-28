@@ -22,8 +22,29 @@ IMU::IMU(const float& dt,
             { R_imu[2][0], R_imu[2][1], R_imu[2][2] } },
     gyro_bias_{ gyro_bias[0], gyro_bias[1], gyro_bias[2] } {}
 
-void IMU::init(EulerAngle_t euler_deg_init) {
-    euler_deg_ = euler_deg_init;
+void IMU::init() {
+    //acc十次采样取平均作为初始值
+    uint8_t raw_range;
+    uint8_t rx_accel_data[6];
+    float average_accel[3];
+    for (int i = 0; i < 10; i++) {
+        bmi088_accel_read_reg(0x41, &raw_range, 1);
+        bmi088_accel_read_reg(0x12, rx_accel_data, 6);
+        //calculate data 单位重力单位g
+        average_accel[0] += (int16_t)(rx_accel_data[1] << 8 | rx_accel_data[0]) * 1000.f * 1.5f *
+            pow(2, (raw_range + 1)) / 32768.f / 1000.f; //X
+        average_accel[1] += (int16_t)(rx_accel_data[3] << 8 | rx_accel_data[2]) * 1000.f * 1.5f *
+            pow(2, (raw_range + 1)) / 32768.f / 1000.f; //Y
+        average_accel[2] += (int16_t)(rx_accel_data[5] << 8 | rx_accel_data[4]) * 1000.f * 1.5f *
+            pow(2, (raw_range + 1)) / 32768.f / 1000.f; //Z
+    }
+    for (float& i: average_accel) {
+        i /= 10.f;
+    }
+    euler_deg_.pitch = atan2(-average_accel[0],
+                             sqrt(pow(average_accel[1], 2)
+                                 + pow(average_accel[2], 2))) * 180.f / M_PI;
+    euler_deg_.yaw = 0.0;
 }
 
 void IMU::readSensor() {
