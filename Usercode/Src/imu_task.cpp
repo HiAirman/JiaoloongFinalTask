@@ -31,12 +31,12 @@ osThreadAttr_t imu_task_attribute{
     );
     uint32_t sequence = 0;
     //此处应该有读取imu数据得到初始位置角度
-    imu.init(EulerAngle());
+    imu.init();
     //给motor的init传输数据
     motor_initialize_data_t motor_initialize_data;
     motor_initialize_data.pitch_angle = imu.euler_deg_.pitch;
     motor_initialize_data.yaw_angle = 0;
-    osMessageQueuePut(imu_to_motor_queue_handle,&motor_initialize_data,0,osWaitForever);
+    osMessageQueuePut(imu_to_motor_queue_handle, &motor_initialize_data, 0,osWaitForever);
     while (true) {
         auto ticks = osKernelGetTickCount();
         //spi读取数据
