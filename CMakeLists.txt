@@ -33,6 +33,7 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
+        Usercode/Src/callback.cpp
         Usercode/Src/user_tasks.cpp
         Usercode/Src/control_task.cpp
         Usercode/Src/can_tx_task.cpp
@@ -41,9 +42,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         Usercode/Src/motor_task.cpp
         Usercode/Src/bmi088.cpp
         Usercode/Src/imu.cpp
-        Usercode/Src/callback.cpp
         Usercode/Src/controller.cpp
-        Usercode/Src/can_rx.cpp)
+        Usercode/Src/can_rx.cpp
+        Usercode/Src/motor.cpp
+        Usercode/Src/pid.cpp)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)

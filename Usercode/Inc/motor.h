@@ -45,7 +45,7 @@ private:
     PID position_pid_, speed_pid_;
 
     // safety
-    bool safety_flag_;
+    bool safety_flag_ = true;
 
     // target
     float target_angle_, target_speed_;

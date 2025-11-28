@@ -46,6 +46,7 @@ void IMU::init() {
                              sqrt(pow(average_accel[1], 2)
                                  + pow(average_accel[2], 2))) * 180.f / M_PI;
     euler_deg_.yaw = 0.0;
+    euler_deg_.roll = 0.0;
 }
 
 void IMU::readSensor() {
@@ -96,11 +97,11 @@ void IMU::update(void) {
     pitch_acc = atan2(-raw_data_.accel[0],
                       sqrt(pow(raw_data_.accel[1], 2)
                           + pow(raw_data_.accel[2], 2))) * 180.f / M_PI;
-    pitch_gyro = -raw_data_.gyro[1];
+    pitch_gyro = -raw_data_.gyro[1]; // 负号是因为pitch轴定义正方向与角速度正方向相反
     euler_deg_.pitch = alpha * (euler_deg_.pitch + pitch_gyro * TASK_DELAY_TIME_IMU_TASK / 1000.0f) + (1 - alpha) *
         pitch_acc;
     yaw_gyro = raw_data_.gyro[2] / cos(euler_deg_.pitch / 180.0f * M_PI);
-    euler_deg_.yaw += yaw_gyro * TASK_DELAY_TIME_IMU_TASK / 1000.0f;
+    euler_deg_.yaw += yaw_gyro * TASK_DELAY_TIME_IMU_TASK / 1000.0f; // 方向是上方看逆时针为正
 
     euler_rad_.pitch = euler_deg_.pitch / 180.0f * M_PI; // 同步更新
     euler_rad_.yaw = euler_deg_.yaw / 180.0f * M_PI;

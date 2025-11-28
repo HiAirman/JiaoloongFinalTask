@@ -42,17 +42,17 @@ void can_rx_isr() {
     //解包 Update feedback data
     if (rx_header.StdId == 0x204 + MOTOR_PITCH_ID) {
         feedback_data.updated = -1;
-        feedback_data.ecd_angle_pitch = (rx_data[0] << 8 | rx_data[1]) / 8191.0f * 360.0f;
-        feedback_data.ecd_angular_velocity_pitch = (rx_data[2] << 8 | rx_data[3]) / 360.0f * 60.0f;
-        feedback_data.real_current_pitch = (rx_data[4] << 8 | rx_data[5]) / 16384.0f * 3.0f;
-        feedback_data.temperature_pitch == (rx_data[6]);
+        feedback_data.ecd_angle_pitch = (int16_t)(rx_data[0] << 8 | rx_data[1]) / 8191.0f * 360.0f;
+        feedback_data.ecd_angular_velocity_pitch = (int16_t)(rx_data[2] << 8 | rx_data[3]) / 60.0f * 360.0f;
+        feedback_data.real_current_pitch = (int16_t)(rx_data[4] << 8 | rx_data[5]) / 16384.0f * 3.0f;
+        feedback_data.temperature_pitch = (int16_t)(rx_data[6]);
     }
     if (rx_header.StdId == 0x204 + MOTOR_YAW_ID) {
         feedback_data.updated = 1;
-        feedback_data.ecd_angle_yaw = (rx_data[0] << 8 | rx_data[1]) / 8191.0f * 360.0f;
-        feedback_data.ecd_angular_velocity_yaw = (rx_data[2] << 8 | rx_data[3]) / 360.0f * 60.0f;
-        feedback_data.real_current_yaw = (rx_data[4] << 8 | rx_data[5]) / 16384.0f * 3.0f;
-        feedback_data.temperature_yaw = (rx_data[6]);
+        feedback_data.ecd_angle_yaw = (int16_t)(rx_data[0] << 8 | rx_data[1]) / 8191.0f * 360.0f;
+        feedback_data.ecd_angular_velocity_yaw = (int16_t)(rx_data[2] << 8 | rx_data[3]) / 60.0f * 360.0f;
+        feedback_data.real_current_yaw = (int16_t)(rx_data[4] << 8 | rx_data[5]) / 16384.0f * 3.0f;
+        feedback_data.temperature_yaw = (int16_t)(rx_data[6]);
     }
     feedback_data.timestamp = osKernelGetTickCount();
     feedback_data.sequence++;
