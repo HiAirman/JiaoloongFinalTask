@@ -34,13 +34,13 @@ osThreadAttr_t control_task_attribute{
         //if (controller.is_controller_connected()) {
         controller_data_t controller_data;
 
-        osMessageQueueGet(dbus_to_control_queue_handle, &controller_data, nullptr, osWaitForever);
-        chx[0] = controller_data.ch0;
-        chx[1] = controller_data.ch1;
-        chx[2] = controller_data.ch2;
-        chx[3] = controller_data.ch3;
-        swx[0] = controller_data.sw1;
-        swx[1] = controller_data.sw2;
+        // osMessageQueueGet(dbus_to_control_queue_handle, &controller_data, nullptr, osWaitForever);
+        // chx[0] = controller_data.ch0;
+        // chx[1] = controller_data.ch1;
+        // chx[2] = controller_data.ch2;
+        // chx[3] = controller_data.ch3;
+        // swx[0] = controller_data.sw1;
+        // swx[1] = controller_data.sw2;
         //}
         //osDelayUntil(ticks + TASK_DELAY_TIME_CONTROL_TASK);
     }

@@ -9,6 +9,7 @@
 #include "main.h"
 #include "mahony.h"
 #include "bmi088.h"
+#include "gimbal_settings.h"
 
 
 IMU::IMU(const float& dt,
@@ -95,10 +96,11 @@ void IMU::update(void) {
     pitch_acc = atan2(-raw_data_.accel[0],
                       sqrt(pow(raw_data_.accel[1], 2)
                           + pow(raw_data_.accel[2], 2))) * 180.f / M_PI;
-    pitch_gyro = raw_data_.gyro[1];
-    yaw_gyro = sqrt(pow(raw_data_.gyro[0], 2) + pow(raw_data_.gyro[2], 2));
-    euler_deg_.pitch = alpha * (euler_deg_.pitch + pitch_gyro * 0.001) + (1 - alpha) * pitch_acc;
-    euler_deg_.yaw += yaw_gyro * 0.001;
+    pitch_gyro = -raw_data_.gyro[1];
+    euler_deg_.pitch = alpha * (euler_deg_.pitch + pitch_gyro * TASK_DELAY_TIME_IMU_TASK / 1000.0f) + (1 - alpha) *
+        pitch_acc;
+    yaw_gyro = raw_data_.gyro[2] / cos(euler_deg_.pitch / 180.0f * M_PI);
+    euler_deg_.yaw += yaw_gyro * TASK_DELAY_TIME_IMU_TASK / 1000.0f;
 
     euler_rad_.pitch = euler_deg_.pitch / 180.0f * M_PI; // 同步更新
     euler_rad_.yaw = euler_deg_.yaw / 180.0f * M_PI;

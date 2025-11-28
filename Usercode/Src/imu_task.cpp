@@ -19,6 +19,9 @@ osThreadAttr_t imu_task_attribute{
     .priority = TASK_PRIORITY_IMU_TASK,
 };
 
+//test
+uint32_t delayed_time = 0, last_tick = 0;
+
 [[noreturn]] void imu_task(void*) {
     //只能加入软件初始化
     float r_imu[3][3] = { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } };
@@ -36,9 +39,12 @@ osThreadAttr_t imu_task_attribute{
     motor_initialize_data_t motor_initialize_data;
     motor_initialize_data.pitch_angle = imu.euler_deg_.pitch;
     motor_initialize_data.yaw_angle = 0;
-    osMessageQueuePut(imu_to_motor_queue_handle, &motor_initialize_data, 0,osWaitForever);
+    osMessageQueuePut(imu_to_motor_queue_handle, &motor_initialize_data, 0, 0);
     while (true) {
         auto ticks = osKernelGetTickCount();
+        //test
+        delayed_time = ticks - last_tick;
+        last_tick = ticks;
         //spi读取数据
         imu.readSensor();
         //解算
